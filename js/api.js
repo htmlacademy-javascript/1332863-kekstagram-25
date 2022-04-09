@@ -10,7 +10,6 @@ const getData = () =>
     .then((response) => response.json())
     .catch(() => showErrorMessage(MESSAGE_TEXT, ALERT_SHOW_TIME));
 
-
 const sendData = (data) => fetch(URL_FOR_SEND, { method: 'POST', body: data }).catch();
 
 export { getData, sendData };
