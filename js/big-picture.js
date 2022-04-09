@@ -1,7 +1,7 @@
 const body = document.querySelector('body');
 const bigPicture = body.querySelector('.big-picture');
 const closeBtn = bigPicture.querySelector('#picture-cancel');
-const img = bigPicture.querySelector('img');
+const image = bigPicture.querySelector('img');
 const likes = bigPicture.querySelector('.likes-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const socialComments = bigPicture.querySelector('.social__comments');
@@ -32,40 +32,42 @@ const createComment = (commentData) => {
   return comment;
 };
 
-const onCloseBigPicture = () => {
+const closePictureByClick = () => {
   body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
 };
 
+const closePictureByKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+
+    body.classList.remove('modal-open');
+    bigPicture.classList.add('hidden');
+  }
+};
+
 const showBigPicture = (pictureNode, recievedData) => {
 
-  const data = getDataById(pictureNode, recievedData);
+  const pictureData = getDataById(pictureNode, recievedData);
 
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
 
-  img.src = data.url;
-  likes.textContent = data.likes;
-  commentsCount.textContent = data.comments.length;
-  description.textContent = data.description;
+  image.src = pictureData.url;
+  likes.textContent = pictureData.likes;
+  commentsCount.textContent = pictureData.comments.length;
+  description.textContent = pictureData.description;
+
   while (socialComments.firstChild) {
     socialComments.removeChild(socialComments.firstChild);
   }
-  data.comments.forEach((comment) => {
+
+  pictureData.comments.forEach((comment) => {
     socialComments.insertAdjacentElement('afterbegin', createComment(comment));
   });
 
-  closeBtn.addEventListener('click', () => onCloseBigPicture());
-  document.addEventListener(
-    'keydown',
-    (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        onCloseBigPicture();
-      }
-    },
-    { once: true },
-  );
+  closeBtn.addEventListener('click', closePictureByClick);
+  document.addEventListener('keydown', closePictureByKeydown);
 };
 
 export { showBigPicture };
