@@ -1,3 +1,5 @@
+const DEFAULT_DEBOUNCE_DELAY = 500;
+
 const checkStingLenght = (str, maxLength) => str.length <= maxLength;
 
 const showErrorMessage = (message, showTime) => {
