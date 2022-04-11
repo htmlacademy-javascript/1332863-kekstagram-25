@@ -37,20 +37,6 @@ const createComment = (commentData) => {
   return comment;
 };
 
-const closePictureByClick = () => {
-  body.classList.remove('modal-open');
-  bigPicture.classList.add('hidden');
-};
-
-const closePictureByKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-
-    body.classList.remove('modal-open');
-    bigPicture.classList.add('hidden');
-  }
-};
-
 const showMoreComments = (comments) => {
   const sliceStart = Number(commentsShown.textContent);
   let sliceEnd;
@@ -80,8 +66,8 @@ const showBigPicture = (pictureNode, receivedData) => {
   description.textContent = pictureData.description;
   commentsTotal.textContent = pictureData.comments.length;
 
-  if (pictureData.comments.length < DISPLAYED_COMMENTS) {
-    commentsShown.textContent = commentsShown.textContent.replace(/[0-99]/, pictureData.comments.length);
+  if (pictureData.comments.length <= DISPLAYED_COMMENTS) {
+    commentsShown.textContent = commentsShown.textContent.replace(/[0-9]+/g, pictureData.comments.length);
     commentsLoader.classList.add('hidden');
   } else {
     commentsShown.textContent = commentsShown.textContent.replace(/[0-9]+/g, 5);
@@ -98,9 +84,32 @@ const showBigPicture = (pictureNode, receivedData) => {
       socialComments.insertAdjacentElement('beforeend', createComment(comment));
     });
 
-  closeBtn.addEventListener('click', closePictureByClick);
-  document.addEventListener('keydown', closePictureByKeydown);
-  commentsLoader.addEventListener('click', () => showMoreComments(pictureData.comments));
+  const commentsShowHandler = () =>{
+    showMoreComments(pictureData.comments);
+  };
+
+  const closePictureByKeydown = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      body.classList.remove('modal-open');
+      bigPicture.classList.add('hidden');
+    }
+
+    commentsLoader.removeEventListener('click', commentsShowHandler);
+    closeBtn.removeEventListener('click', closePictureByClick, { once: true });
+  };
+
+  function closePictureByClick() {
+    body.classList.remove('modal-open');
+    bigPicture.classList.add('hidden');
+
+    commentsLoader.removeEventListener('click', commentsShowHandler);
+    document.removeEventListener('keydown', closePictureByKeydown);
+  }
+
+  commentsLoader.addEventListener('click', commentsShowHandler);
+  closeBtn.addEventListener('click', closePictureByClick, { once: true });
+  document.addEventListener('keydown', closePictureByKeydown, { once: true });
 };
 
 export { showBigPicture };
