@@ -88,7 +88,7 @@ const showBigPicture = (pictureNode, receivedData) => {
     showMoreComments(pictureData.comments);
   };
 
-  const closePictureByKeydown = (evt) => {
+  function closePictureByKeydown(evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       body.classList.remove('modal-open');
@@ -97,7 +97,7 @@ const showBigPicture = (pictureNode, receivedData) => {
 
     commentsLoader.removeEventListener('click', commentsShowHandler);
     closeBtn.removeEventListener('click', closePictureByClick, { once: true });
-  };
+  }
 
   function closePictureByClick() {
     body.classList.remove('modal-open');
