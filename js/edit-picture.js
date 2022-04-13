@@ -3,7 +3,7 @@ const DEFAULT_IMG_SCALE = 100;
 const MAX_IMG_SCALE = 100;
 const MIN_IMG_SCALE = 25;
 const SCALE_STEP = 25;
-const CONVERTER_TO_CSS_VALUE = 100;
+const HUNDREDTH_PART = 100;
 const DEFAULT_FILTER_MAX_VALUE = 1;
 const DEFAULT_FILTER_MIN_VALUE = 0;
 const DEFAULT_FILTER_STEP = 0.1;
@@ -56,7 +56,7 @@ uploadFileBtn.addEventListener('change', () => {
   sliderElementContainer.classList.add('hidden');
 
   scaleDisplay.value = `${DEFAULT_IMG_SCALE}%`;
-  imgPreview.style.transform = `scale(${DEFAULT_IMG_SCALE / CONVERTER_TO_CSS_VALUE})`;
+  imgPreview.style.transform = `scale(${DEFAULT_IMG_SCALE / HUNDREDTH_PART})`;
 
   const userImg = uploadFileBtn.files[0];
   const fileName = userImg.name.toLowerCase();
@@ -75,7 +75,7 @@ scaleUpBtn.addEventListener('click', () => {
     const scaleValue = parseInt(scaleDisplay.value, 10) + SCALE_STEP;
     scaleDisplay.value = `${scaleValue}%`;
 
-    imgPreview.style.transform = `scale(${scaleValue / CONVERTER_TO_CSS_VALUE})`;
+    imgPreview.style.transform = `scale(${scaleValue / HUNDREDTH_PART})`;
   }
 });
 
@@ -84,7 +84,7 @@ scaleDownBtn.addEventListener('click', () => {
     const scaleValue = parseInt(scaleDisplay.value, 10) - SCALE_STEP;
     scaleDisplay.value = `${scaleValue}%`;
 
-    imgPreview.style.transform = `scale(${scaleValue / CONVERTER_TO_CSS_VALUE})`;
+    imgPreview.style.transform = `scale(${scaleValue / HUNDREDTH_PART})`;
   }
 });
 
@@ -128,6 +128,8 @@ effects.addEventListener('change', () => {
 
   if (activeEffect === 'none') {
     sliderElementContainer.classList.add('hidden');
+    imgPreview.removeAttribute('style');
+    imgPreview.style.transform = `scale(${parseInt(scaleDisplay.value, 10) / HUNDREDTH_PART})`;
   } else {
     sliderElementContainer.classList.remove('hidden');
   }

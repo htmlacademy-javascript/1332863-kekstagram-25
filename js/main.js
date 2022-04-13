@@ -1,2 +1,2 @@
 import './render-pictures.js';
-import './send-picture.js';
+import './edit-picture.js';
