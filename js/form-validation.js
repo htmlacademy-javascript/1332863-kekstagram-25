@@ -1,10 +1,16 @@
-// import { sendData } from './api.js';
+import { sendData } from './api.js';
+import { onSuccess, onFail } from './popup-windows.js';
+import { disableButton } from './util.js';
 
 const TOTAL_ALLOWED_TAGS = 5;
 const MAX_TAG_LENGHT = 20;
 
-const userForm = document.querySelector('.img-upload__form');
-const hashTags = userForm.querySelector('.text__hashtags');
+const body = document.querySelector('body');
+const userForm = body.querySelector('.img-upload__form');
+const editWindow = userForm.querySelector('.img-upload__overlay');
+const hashTags = editWindow.querySelector('.text__hashtags');
+const submitButton = editWindow.querySelector('.img-upload__submit');
+
 
 const pristine = new Pristine(userForm, {
   classTo: 'container-for-error-message',
@@ -26,17 +32,16 @@ const checkHashtag = (tagsArr) => {
   tagsArr.forEach((tag) => {
     if (tag.length <= MAX_TAG_LENGHT) {
       isTooLongHashtag = true;
-      return true;
     } else {
       isTooLongHashtag = false;
-      return true;
     }
   });
 
   tagsArr.forEach((tag) => {
     isCorrectHashtag = /^#(?=.*[^0-9])[a-zа-яё0-9]+$/i.test(tag);
-    return /^#(?=.*[^0-9])[a-zа-яё0-9]+$/i.test(tag);
   });
+
+  return isTooLongHashtag && isCorrectHashtag;
 };
 
 const validateHashtags = (value) => {
@@ -71,4 +76,24 @@ pristine.addValidator(hashTags, validateHashtags, showErrorMessage);
 
 userForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
+
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    disableButton(submitButton);
+    sendData(formData)
+      .then((response) => {
+        if (response.ok) {
+          body.classList.remove('modal-open');
+          editWindow.classList.add('hidden');
+          onSuccess(userForm, submitButton);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch(() => {
+        body.classList.remove('modal-open');
+        editWindow.classList.add('hidden');
+        onFail(userForm, submitButton);
+      });
+  }
 });

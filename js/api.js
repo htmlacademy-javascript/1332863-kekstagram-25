@@ -1,4 +1,4 @@
-import { showErrorMessage } from './util.js';
+import { showErrorMessage } from './popup-windows.js';
 
 const URL_FOR_GET = 'https://25.javascript.pages.academy/kekstagram/data';
 const URL_FOR_SEND = 'https://25.javascript.pages.academy/kekstagram';

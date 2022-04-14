@@ -33,6 +33,8 @@ const resetToDefault = () => {
   imgPreview.src = '';
   uploadFileBtn.files = new DataTransfer().files;
   sliderElementContainer.classList.add('hidden');
+  scaleDisplay.value = `${DEFAULT_IMG_SCALE}%`;
+  imgPreview.style.transform = `scale(${DEFAULT_IMG_SCALE / HUNDREDTH_PART})`;
 };
 
 function closeEditWindowByKeydown(evt) {
@@ -183,3 +185,5 @@ sliderElement.noUiSlider.on('slide', () => {
   effect.value = sliderElement.noUiSlider.get();
   applyEffect(effect.value, activeEffect);
 });
+
+export { resetToDefault };

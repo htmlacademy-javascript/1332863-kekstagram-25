@@ -2,26 +2,30 @@ const DEFAULT_DEBOUNCE_DELAY = 500;
 
 const checkStingLenght = (str, maxLength) => str.length <= maxLength;
 
-const showErrorMessage = (message, showTime) => {
+const getRandomInt = (firstNumber, secondNumber) => {
+  const max = Math.floor(Math.max(Math.abs(firstNumber), Math.abs(secondNumber)));
+  const min = Math.ceil(Math.min(Math.abs(firstNumber), Math.abs(secondNumber)));
 
-  const alertContainer = document.createElement('div');
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.top = 0;
-  alertContainer.style.left = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+  const result = Math.random() * (max - min + 1) + min;
 
-  alertContainer.textContent = message;
+  return Math.floor(result);
+};
 
-  document.body.append(alertContainer);
+const disableButton = (btn) => {
+  btn.disabled = true;
+  btn.style.opacity = 0.4;
+};
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, showTime);
+const enableButton = (btn) => {
+  btn.disabled = false;
+  btn.style.opacity = 1;
+};
+
+const removeOnPushBtn = (buttonName, removingObj, evt) => {
+  if (evt.key === buttonName) {
+    evt.preventDefault();
+    removingObj.remove();
+  }
 };
 
 const debounce = (callback, timeoutDelay = DEFAULT_DEBOUNCE_DELAY) => {
@@ -34,4 +38,4 @@ const debounce = (callback, timeoutDelay = DEFAULT_DEBOUNCE_DELAY) => {
   };
 };
 
-export { checkStingLenght, showErrorMessage, debounce };
+export { checkStingLenght, getRandomInt, disableButton, enableButton, removeOnPushBtn, debounce };
