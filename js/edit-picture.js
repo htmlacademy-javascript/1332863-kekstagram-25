@@ -13,6 +13,8 @@ const userForm = body.querySelector('.img-upload__form');
 const uploadFileBtn = userForm.querySelector('#upload-file');
 const editWindow = userForm.querySelector('.img-upload__overlay');
 const resetBtn = editWindow.querySelector('#upload-cancel');
+const hashtagField = editWindow.querySelector('.text__hashtags');
+const descriptionField = editWindow.querySelector('.text__description');
 const imgPreview = editWindow.querySelector('.img-upload__preview > img');
 const scaleUpBtn = editWindow.querySelector('.scale__control--bigger');
 const scaleDownBtn = editWindow.querySelector('.scale__control--smaller');
@@ -22,30 +24,35 @@ const effect = editWindow.querySelector('.effect-level__value');
 const sliderElement = editWindow.querySelector('.effect-level__slider');
 const sliderElementContainer = editWindow.querySelector('.effect-level');
 
-const resetAllEffects = () => {
+const resetToDefault = () => {
   const previousEffectClass = Array.from(imgPreview.classList);
   if (String(previousEffectClass)) {
     imgPreview.classList.remove(previousEffectClass);
   }
   imgPreview.removeAttribute('style');
+  imgPreview.src = '';
+  uploadFileBtn.files = new DataTransfer().files;
+  sliderElementContainer.classList.add('hidden');
 };
 
 function closeEditWindowByKeydown(evt) {
-  if (evt.key === 'Escape') {
+  if (evt.key === 'Escape' && document.activeElement !== hashtagField && document.activeElement !== descriptionField) {
     evt.preventDefault();
     body.classList.remove('modal-open');
     editWindow.classList.add('hidden');
-  }
-  resetAllEffects();
+    resetToDefault();
 
-  resetBtn.removeEventListener('click', closeEditWindowByClick, { once: true });
+    resetBtn.removeEventListener('click', closeEditWindowByClick);
+    document.removeEventListener('keydown', closeEditWindowByKeydown);
+  }
 }
 
 function closeEditWindowByClick() {
   body.classList.remove('modal-open');
   editWindow.classList.add('hidden');
-  resetAllEffects();
+  resetToDefault();
 
+  resetBtn.removeEventListener('click', closeEditWindowByClick);
   document.removeEventListener('keydown', closeEditWindowByKeydown);
 }
 
@@ -66,8 +73,8 @@ uploadFileBtn.addEventListener('change', () => {
     imgPreview.src = URL.createObjectURL(userImg);
   }
 
-  resetBtn.addEventListener('click', closeEditWindowByClick, { once: true });
-  document.addEventListener('keydown', closeEditWindowByKeydown, { once: true });
+  resetBtn.addEventListener('click', closeEditWindowByClick);
+  document.addEventListener('keydown', closeEditWindowByKeydown);
 });
 
 scaleUpBtn.addEventListener('click', () => {

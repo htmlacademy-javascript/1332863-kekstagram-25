@@ -56,6 +56,13 @@ main {
   overflow: hidden;
 }
 
+.error-message-style {
+  margin-top: -20px;
+  margin-bottom: 15px;
+  text-transform: none;
+  font-size: 16px;
+  color: #ff0000;
+}
 
 /**
  * Кнопка закрытия модального окна
