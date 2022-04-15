@@ -12,6 +12,20 @@ const filterDefault = document.querySelector('#filter-default');
 
 let pictures = [];
 
+const renderFilteredPictures = (evt) => {
+  if (evt.target === filterRandom) {
+    renderRandomPictures(pictures);
+  }
+
+  if (evt.target === filterDiscussed) {
+    renderDiscussedPictures(pictures);
+  }
+
+  if (evt.target === filterDefault) {
+    renderDefaultPictures(pictures);
+  }
+};
+
 getData()
   .then((gettedPictures) => {
     pictures = gettedPictures;
@@ -26,7 +40,5 @@ getData()
     });
   })
   .then(() => {
-    filterRandom.addEventListener('click', debounce(() => renderRandomPictures(pictures), DEBOUNCE_TIMEOUT));
-    filterDiscussed.addEventListener('click', debounce(() => renderDiscussedPictures(pictures), DEBOUNCE_TIMEOUT));
-    filterDefault.addEventListener('click', debounce(() => renderDefaultPictures(pictures), DEBOUNCE_TIMEOUT));
+    filter.addEventListener('click', debounce(renderFilteredPictures, DEBOUNCE_TIMEOUT));
   });

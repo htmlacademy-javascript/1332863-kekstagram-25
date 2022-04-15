@@ -1,7 +1,5 @@
 const DEFAULT_DEBOUNCE_DELAY = 500;
 
-const checkStingLenght = (str, maxLength) => str.length <= maxLength;
-
 const disableButton = (btn) => {
   btn.disabled = true;
   btn.style.opacity = 0.4;
@@ -29,4 +27,4 @@ const debounce = (callback, timeoutDelay = DEFAULT_DEBOUNCE_DELAY) => {
   };
 };
 
-export { checkStingLenght, disableButton, enableButton, removeOnPushBtn, debounce };
+export { disableButton, enableButton, removeOnPushBtn, debounce };

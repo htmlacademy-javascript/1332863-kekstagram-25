@@ -6,12 +6,30 @@ const errorMessage = document.querySelector('#error').content.querySelector('.er
 const successButton = successMessage.querySelector('.success__button');
 const errorButton = errorMessage.querySelector('.error__button');
 
+const removeSuccessMessageByEsc = (evt) => {
+  removeOnPushBtn('Escape', successMessage, evt);
+};
+
+const removeErrorMessageByEsc = (evt) => {
+  removeOnPushBtn('Escape', errorMessage, evt);
+};
+
+const removeSuccessMessage = () => {
+  successMessage.remove();
+  document.removeEventListener('keydown', removeSuccessMessageByEsc, { once: true });
+};
+
+const removeErrorMessage = () => {
+  errorMessage.remove();
+  document.removeEventListener('keydown', removeErrorMessageByEsc, { once: true });
+};
+
 const onSuccess = (form, button) => {
   document.body.insertAdjacentElement('beforeend', successMessage);
 
-  successButton.addEventListener('click', () => successMessage.remove());
-  successMessage.addEventListener('click', () => successMessage.remove());
-  document.addEventListener('keydown', (evt) => removeOnPushBtn('Escape', successMessage, evt));
+  successButton.addEventListener('click', removeSuccessMessage);
+  successMessage.addEventListener('click', removeSuccessMessage);
+  document.addEventListener('keydown', removeSuccessMessageByEsc, { once: true });
 
   form.reset();
   resetToDefault();
@@ -22,9 +40,10 @@ const onFail = (form, button) => {
   document.body.insertAdjacentElement('beforeend', errorMessage);
 
   errorButton.focus();
-  errorButton.addEventListener('click', () => errorMessage.remove());
-  errorMessage.addEventListener('click', () => errorMessage.remove());
-  document.addEventListener('keydown', (evt) => removeOnPushBtn('Escape', errorMessage, evt));
+  errorButton.addEventListener('click', removeErrorMessage);
+  errorMessage.addEventListener('click', removeErrorMessage);
+  document.addEventListener('keydown', removeErrorMessageByEsc, { once: true });
+
   form.reset();
   resetToDefault();
   enableButton(button);
