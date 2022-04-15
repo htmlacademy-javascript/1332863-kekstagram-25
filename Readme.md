@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Salavat Imaev](https://up.htmlacademy.ru/javascript/25/user/1332863).
-* Наставник: `Неизвестно`.
+* Наставник: [Artem Rudov](https://htmlacademy.ru/profile/artrudov).
 
 ---
 
