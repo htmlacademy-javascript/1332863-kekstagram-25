@@ -10,13 +10,15 @@ const userForm = body.querySelector('.img-upload__form');
 const editWindow = userForm.querySelector('.img-upload__overlay');
 const hashTags = editWindow.querySelector('.text__hashtags');
 const submitButton = editWindow.querySelector('.img-upload__submit');
-
+const uploadFileBtn = userForm.querySelector('#upload-file');
 
 const pristine = new Pristine(userForm, {
   classTo: 'container-for-error-message',
   errorTextParent: 'container-for-error-message',
   errorTextClass: 'error-message-style',
 });
+
+uploadFileBtn.addEventListener('change', () => pristine.reset());
 
 let isTooLongHashtag;
 let isCorrectHashtag;
@@ -38,7 +40,7 @@ const checkHashtag = (tagsArr) => {
   });
 
   tagsArr.forEach((tag) => {
-    isCorrectHashtag = /^#(?=.*[^0-9])[a-zа-яё0-9]+$/i.test(tag);
+    isCorrectHashtag = /^#[a-zа-яё0-9]+$/i.test(tag);
   });
 
   return isTooLongHashtag && isCorrectHashtag;
@@ -47,10 +49,10 @@ const checkHashtag = (tagsArr) => {
 const validateHashtags = (value) => {
   if (value) {
     const tags = value.split(' ').filter((element) => element !== '');
-    return (tags.length > TOTAL_ALLOWED_TAGS) ? false : hasDuplicates(tags) && checkHashtag(tags);
-  } else {
-    return true;
+    return tags.length <= TOTAL_ALLOWED_TAGS && hasDuplicates(tags) && checkHashtag(tags);
   }
+
+  return true;
 };
 
 const showErrorMessage = (value) => {

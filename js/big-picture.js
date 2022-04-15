@@ -84,7 +84,7 @@ const showBigPicture = (pictureNode, receivedData) => {
       socialComments.insertAdjacentElement('beforeend', createComment(comment));
     });
 
-  const commentsShowHandler = () =>{
+  const commentsClickHandler = () => {
     showMoreComments(pictureData.comments);
   };
 
@@ -95,7 +95,7 @@ const showBigPicture = (pictureNode, receivedData) => {
       bigPicture.classList.add('hidden');
     }
 
-    commentsLoader.removeEventListener('click', commentsShowHandler);
+    commentsLoader.removeEventListener('click', commentsClickHandler);
     closeBtn.removeEventListener('click', closePictureByClick, { once: true });
   }
 
@@ -103,11 +103,11 @@ const showBigPicture = (pictureNode, receivedData) => {
     body.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
 
-    commentsLoader.removeEventListener('click', commentsShowHandler);
+    commentsLoader.removeEventListener('click', commentsClickHandler);
     document.removeEventListener('keydown', closePictureByKeydown);
   }
 
-  commentsLoader.addEventListener('click', commentsShowHandler);
+  commentsLoader.addEventListener('click', commentsClickHandler);
   closeBtn.addEventListener('click', closePictureByClick, { once: true });
   document.addEventListener('keydown', closePictureByKeydown, { once: true });
 };
