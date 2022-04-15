@@ -64,7 +64,7 @@ const showErrorMessage = (value) => {
   }
 
   if (!hasTagDuplicate) {
-    return 'Теги не должны быть одинаковыми';
+    return 'Хештеги не должны быть одинаковыми';
   }
 
   if (tags.length > TOTAL_ALLOWED_TAGS) {
